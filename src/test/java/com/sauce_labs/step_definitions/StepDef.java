@@ -1,5 +1,6 @@
 package com.sauce_labs.step_definitions;
 
+import com.sauce_labs.pages.CartPage;
 import com.sauce_labs.pages.LoginPage;
 import com.sauce_labs.pages.MainPage;
 import io.cucumber.java.en.Given;
@@ -7,53 +8,65 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.BrowserUtils;
 import utils.DriverHelper;
+
+import java.time.Duration;
+import java.util.List;
 
 public class StepDef {
 
     WebDriver driver = DriverHelper.getDriver();
-    LoginPage loginPage = new LoginPage(driver);
-
     MainPage mainPage = new MainPage(driver);
 
-    @Given("user is on navigated to login page")
-    public void user_is_on_navigated_to_login_page() {
-        driver.get("https://www.saucedemo.com/");
+    CartPage cartPage = new CartPage(driver);
+
+    // scenario section
+    @When("user is on main page user validates dropdown options")
+    public void user_is_on_main_page_user_validates_dropdown_options() {
+        List<WebElement> options = mainPage.dropdownOptions();
+        for (WebElement element : options) {
+
+            if (element.getText().equalsIgnoreCase("Price (high to low)")) {
+                element.click();
+            }
+        }
     }
-    @When("user is on login page user provides username and password")
-    public void user_is_on_login_page_user_provides_username_and_password() {
-        loginPage.setLogin("standard_user","secret_sauce");
-    }
-    @Then("user clicks on login button")
-    public void user_clicks_on_login_button() {
-        loginPage.clickOnLoginButton();
+
+    @Then("user clicks on hamburger menu and clicks About option then user navigates back")
+    public void user_clicks_on_hamburger_menu_and_clicks_about_option_then_user_navigates_back() {
+        mainPage.clickOnHamburgerAbout();
+        driver.navigate().back();
     }
 
-    @Then("user validates title and url of the main page")
-    public void user_validates_title_and_url_of_the_main_page() {
-        //validating title of main page
-        String expectedTitle = "Swag Labs";
-        String actualTitle = BrowserUtils.getTitleWithJS(driver);
-        Assert.assertEquals("Failed to validate title of main page",expectedTitle, actualTitle);
+    @Then("user adds one product to cart and clicks on cart button")
+    public void user_adds_one_product_to_cart_and_clicks_on_cart_button() {
+        mainPage.addProductToCart();
+    }
 
-        //validating url
-        String expectedURL = "https://www.saucedemo.com/inventory.html";
-        String actualURL = driver.getCurrentUrl();
-        Assert.assertEquals("Failed to validate URL of main page",expectedURL, actualURL);
+    @Then("user verifies that product is added and user removes the product from the cart")
+    public void user_verifies_that_product_is_added_and_user_removes_the_product_from_the_cart() throws InterruptedException {
+        Thread.sleep(2000);
+        cartPage.validateProductAndRemoveIt();
+    }
 
+    @When("user clicks on twitter user validates title of twitter")
+    public void user_clicks_on_twitter_user_validates_title_of_twitter() throws InterruptedException {
+      mainPage.clickOnTwitter(driver);
 
     }
-    @Then("user validates main page header")
-    public void user_validates_main_page_header() {
+    @When("user clicks on facebook user validates title of facebook")
+    public void user_clicks_on_facebook_user_validates_title_of_facebook() throws InterruptedException {
+       mainPage.clickOnFacebook(driver);
 
-        String expectedHeader = "Swag Labs";
-        String actualHeader = mainPage.getHeader();
-        Assert.assertEquals(expectedHeader, actualHeader); // validation with assignment
-
-        Assert.assertEquals("Swag Labs",mainPage.getHeader()); // validation without assignment
-
+    }
+    @When("user clicks on linkedIn user validates title of linkedIn")
+    public void user_clicks_on_linked_in_user_validates_title_of_linked_in() throws InterruptedException {
+        mainPage.clickOnLinkIn(driver);
 
     }
 
