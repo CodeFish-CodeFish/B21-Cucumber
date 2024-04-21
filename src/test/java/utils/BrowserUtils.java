@@ -1,5 +1,6 @@
 package utils;
 
+import io.cucumber.java.Scenario;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -10,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Date;
 import java.util.Set;
 
 public class BrowserUtils {
@@ -195,6 +197,26 @@ public class BrowserUtils {
         }catch (IOException e){
 
             throw new RuntimeException(e);
+
+        }
+
+
+
+    }
+
+    public static void takeScreenshot(Scenario scenario, WebDriver driver){
+
+        Date currentDate = new Date();
+        String screenshotFileName = currentDate.toString().replace(":", "-");
+
+        if (scenario.isFailed()){
+            File screenshotFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+
+            try {
+                FileUtils.copyFile(screenshotFile, new File("src/test/java/screenshots/" + screenshotFileName + ".png"));
+            }catch (IOException e){
+                throw new RuntimeException(e);
+            }
 
         }
 
