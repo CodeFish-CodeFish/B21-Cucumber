@@ -1,0 +1,25 @@
+package com.lambda.step_definitions;
+
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import org.openqa.selenium.WebDriver;
+import utils.DriverHelper;
+
+public class LHook {
+
+    public static WebDriver driver;
+
+    @Before
+    public void startUp(){
+        driver = DriverHelper.getDriver();
+        driver.get("https://www.lambdatest.com/selenium-playground/");
+    }
+
+    @After
+    public void tearDown() throws InterruptedException {
+        Thread.sleep(3000); // not going to be used in real life
+        driver.quit();
+
+    }
+
+}

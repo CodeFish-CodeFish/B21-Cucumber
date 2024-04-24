@@ -11,20 +11,20 @@ public class Hook {
 
    public static WebDriver driver;
 
-    @Before
-    public void initializeDriver() {
-
-        driver = DriverHelper.getDriver();
-        driver.get("http://secure.smartbearsoftware.com/samples/testcomplete11/WebOrders/login.aspx");
-    }
-
-    @After
-    public void tearDown(Scenario scenario) throws InterruptedException {
-
-        //BrowserUtils.takeScreenshot(scenario, driver);
-        Thread.sleep(3000);
-        driver.quit();
-    }
+//    @Before
+//    public void initializeDriver() {
+//
+//        driver = DriverHelper.getDriver();
+//        driver.get("http://secure.smartbearsoftware.com/samples/testcomplete11/WebOrders/login.aspx");
+//    }
+//
+//    @After
+//    public void tearDown(Scenario scenario) throws InterruptedException {
+//
+//        //BrowserUtils.takeScreenshot(scenario, driver);
+//        Thread.sleep(3000);
+//        driver.quit();
+//    }
 
 
 }
